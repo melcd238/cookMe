@@ -9,10 +9,9 @@ function App() {
   const [recipes, setRecipes] = useState(data);
   
 
-  const handleFilter = () => {
-    const search = document.querySelector("#searchBarInput").value;
+  const handleFilter = (val) => {
     const filteredRecipes = data.filter((recipe) => {
-      return recipe.title.toLowerCase().includes(search.toLowerCase().trim());
+      return recipe.title.toLowerCase().startsWith(val.toLowerCase().trim());
     });
     setRecipes(filteredRecipes);
   };
