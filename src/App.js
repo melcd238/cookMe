@@ -11,14 +11,19 @@ import HomePage from "./Pages/HomePage/HomePage";
 //seedTestRecipes();
 
 function App() {
-  const { recipes, loading, updateRecipe, handleClickLoadMoreRecipes,handleFilter } = useFetchRecipes();
+  console.log("render App")
+  const { recipes, loading, updateRecipe, handleClickLoadMoreRecipes,handleFilter, deleteRecipe} = useFetchRecipes();
 
   
 
   return (
     <div className={`d-flex flex-column ${styles.appContainer}`}>
       <Header   searchbar={ handleFilter} />
-       <HomePage  recipes = {recipes} loading = {loading} toggleLikedRecipe = {updateRecipe} handleClickLoadMoreRecipes={handleClickLoadMoreRecipes}/>
+       <HomePage  recipes = {recipes}
+                  loading = {loading} 
+                  toggleLikedRecipe = {updateRecipe} 
+                  handleClickLoadMoreRecipes={handleClickLoadMoreRecipes}
+                  deleteRecipe={deleteRecipe}/>
       <Footer />
     </div>
   );

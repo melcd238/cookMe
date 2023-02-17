@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { ApiContext } from "../Context/ApiContext";
 
 export default function useFetchRecipes() {
+
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -37,7 +38,8 @@ export default function useFetchRecipes() {
   function handleClickLoadMoreRecipes() {
     setPage(page + 1);
   }
-
+  
+  // A modifier pour que la recherche soit plus fluide et que l'on puisse rechercher par catégorie et par ingrédient en utilisant un useState pour filtrer les recettes
   function handleFilter(val) { 
     const filtered = recipes.filter((recipe) => {
       return recipe.title.toLowerCase().startsWith(val.toLowerCase().trim());
@@ -49,5 +51,11 @@ export default function useFetchRecipes() {
     }
   }
 
-  return { recipes, loading, updateRecipe, handleClickLoadMoreRecipes, handleFilter };
+  function deleteRecipe (id){
+    // supprimer une recette
+    const newrecipes = recipes.filter((recipe) => recipe._id !== id)
+   setRecipes(newrecipes)
+  }
+
+  return { recipes, loading, updateRecipe, handleClickLoadMoreRecipes, handleFilter, deleteRecipe };
 }

@@ -3,7 +3,7 @@ import Recipe from '../Recipe/Recipe';
 import Loader from '../../../../Components/Loader/Loader';
 
 
-function Content ({recipes, loading , toggleLikedRecipe, handleClickLoadMoreRecipes}){
+function Content ({recipes, loading , toggleLikedRecipe, handleClickLoadMoreRecipes, deleteRecipe}){
   
 
     return (
@@ -15,7 +15,10 @@ function Content ({recipes, loading , toggleLikedRecipe, handleClickLoadMoreReci
            ( <div className={`card p-20 ${styles.contentCard}`}>
             <div className={styles.grid}>
                 {recipes.map((recipe) =>(
-                     <Recipe key={recipe._id} recipe={recipe} toggleLikedRecipe={toggleLikedRecipe}/>
+                     <Recipe key={recipe._id} 
+                             recipe={recipe} 
+                             toggleLikedRecipe={toggleLikedRecipe}
+                             deleteRecipe={deleteRecipe}/>
                 ))}
             </div>
             </div>)
