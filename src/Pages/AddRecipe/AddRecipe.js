@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useContext } from 'react';
 import { ApiContext } from '../../Context/ApiContext';
+import { Link } from 'react-router-dom';
 
 
 
@@ -53,9 +54,10 @@ function AddRecipe () {
 
     return (
       
-        <div className='flex-fill  mt-100'>
+        <div className={`${styles.cardForm} flex-fill`}>
             <form onSubmit={handleSubmit(submit)} className={`${styles.recipeForm} d-flex flex-column card p20`}>
             <h1 className={styles.formTitle}>Ajouter une recette</h1>
+                <Link to="/"><span className={`material-symbols-outlined ${styles.arrowComeBack}`}>arrow_back</span> </Link>
                 <div>
                     <label htmlFor="title">Titre de la recette</label>
                     <input {...register('title')} type="text" name="title" id="title" className={styles.inputForm}/>
@@ -63,7 +65,7 @@ function AddRecipe () {
                 </div>
                 <div>
                     <label htmlFor="image">Photo de la recette</label>
-                    <input {...register("image")} type="text" name="image" id="image" className={styles.inputForm}/>
+                    <input {...register("image")} type="text" name="image" id="image" className={styles.inputForm} placeholder="Copier le lien d'une photo"/>
                     {errors.image && <span className={styles.error}>{errors.image.message}</span>}
                 </div>
                 {errors.generic && <p className={styles.error}>{errors.generic.message}</p>}

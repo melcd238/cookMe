@@ -1,6 +1,7 @@
 import styles from "./Header.module.scss";
 import cookLogo from "../../assets/images/COOK.png";
 import SearchBar from "../SearchBar/SearchBar";
+import { Link } from "react-router-dom";
 
 
 
@@ -9,7 +10,7 @@ function Header ({ searchbar}){
         <header className={`${styles.header}`}>
             <div className="d-flex flex-row align-items-center justify-content-space-between flex-no-wrap">
             <div className={`${styles.logoContainer} mr-10`}>
-                <img src={cookLogo} alt="Cook Logo" />
+             <Link to="/" > <img src={cookLogo} alt="Cook Logo" /> </Link>
             </div>
             <SearchBar  searchbar={searchbar}/>
             <ul className="d-flex flex-row flex-no-wrap"> 

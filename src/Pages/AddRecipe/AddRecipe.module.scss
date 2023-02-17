@@ -1,6 +1,7 @@
 .recipeForm{
         border-radius: 15px;
         box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        position: relative;
         .formTitle{
             font-size: 20px;
             font-weight: 600;
@@ -26,7 +27,6 @@
                 &:focus{
                     border: 1px solid #333;
                 }
-            
         }
         .btnForm{
             width: 100%;
@@ -54,4 +54,28 @@
         font-weight: 400;
         display: inline-block;
         margin-bottom: 10px;
+    }
+    .cardForm{
+        width: 100%;
+        max-width: 800px;
+        padding: 20px;
+        box-sizing: border-box;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 100px;
+    }
+    .arrowComeBack{
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        cursor: pointer;
+        color: var(--color-primary);
+        font-size: 30px;
+        font-weight: 700;
+    }
+    .inputForm::placeholder{
+        color:  #999;
+        font-weight: 200;
+        font-style: italic;
+        font-size: 12px;
     }
