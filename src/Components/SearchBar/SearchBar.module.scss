@@ -23,9 +23,7 @@
         background-color: var(--color-primary);
         color: white;
         font-weight: bolder;
-        &:hover{
-            background-color: var(--color-gray-1);
-        }
+        cursor:none;
     }
     .searchInput{
         width: 100%;

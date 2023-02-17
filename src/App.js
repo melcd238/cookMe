@@ -1,25 +1,24 @@
 import Header from "./Components/Header/Header";
 import Footer from "./Components/Footer/Footer";
-import Content from "./Components/Content/Content";
 import styles from "./App.module.scss";
-import { data } from "./data/data";
-import { useState } from "react";
+import useFetchRecipes from "./hooks/useFetchRecipes";
+import HomePage from "./Pages/HomePage/HomePage";
+
+//import { data } from "./data/data";
+// Test avec restapi.fr/api/recipes pour tester le front sans le back 
+//import { seedTestRecipes } from "./data/seedTest";
+
+//seedTestRecipes();
 
 function App() {
-  const [recipes, setRecipes] = useState(data);
-  
+  const { recipes, loading, updateRecipe, handleClickLoadMoreRecipes,handleFilter } = useFetchRecipes();
 
-  const handleFilter = (val) => {
-    const filteredRecipes = data.filter((recipe) => {
-      return recipe.title.toLowerCase().startsWith(val.toLowerCase().trim());
-    });
-    setRecipes(filteredRecipes);
-  };
+  
 
   return (
     <div className={`d-flex flex-column ${styles.appContainer}`}>
       <Header   searchbar={ handleFilter} />
-      <Content  recipes = {recipes}/>
+       <HomePage  recipes = {recipes} loading = {loading} toggleLikedRecipe = {updateRecipe} handleClickLoadMoreRecipes={handleClickLoadMoreRecipes}/>
       <Footer />
     </div>
   );

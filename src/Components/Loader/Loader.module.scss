@@ -1,0 +1,19 @@
+.loader{
+    text-align:center;
+    margin-top: 80px;
+    span{
+        font-weight: 700;
+        font-size: 48px;
+        color:var(--color-primary);
+        animation: rotate 2s infinite;
+    }
+}
+
+@keyframes rotate {
+    from{
+        transform: rotate(0);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
