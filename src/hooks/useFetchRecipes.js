@@ -14,7 +14,7 @@ export default function useFetchRecipes() {
   useEffect(() => {
     async function fetchRecipes() {
       try {
-        const response = await fetch(`${BASE_URL}?skip=${(page - 1) * 10}&limit=10`);
+        const response = await fetch(`${BASE_URL}?skip=${(page - 1) * 10}&limit=10&sort=createdAt:-1`);
         if (response.ok) {
           const data = await response.json();
           setRecipes((x) => (Array.isArray(data) ? [...x, ...data] : [data]));
