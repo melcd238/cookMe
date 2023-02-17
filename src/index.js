@@ -1,15 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './assets/styles/index.scss';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ApiContext } from './Context/ApiContext';
+import App from './App';
+import { BrowserRouter } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   //<React.StrictMode>
     <ApiContext.Provider value="https://restapi.fr/api/recipes">
-    <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </ApiContext.Provider>
  // </React.StrictMode>
 );

@@ -8,6 +8,7 @@ import { ApiContext } from '../../Context/ApiContext';
 
 
 
+
 function AddRecipe () {
     const BASE_URL = useContext(ApiContext)
    const defaultValues = {
@@ -36,6 +37,10 @@ function AddRecipe () {
             });
             if (response.ok) {
                 reset(defaultValues);
+                // alert a modifier pour afficher un message plus joli
+                alert('Recette ajoutée avec succès');
+                // redirection vers la page d'accueil
+                window.location.href = '/';
             } else {
                 setError('generic', { type: 'generic', message: 'Une erreur est survenue' });
             }
@@ -47,7 +52,8 @@ function AddRecipe () {
 
 
     return (
-        <div>
+      
+        <div className='flex-fill  mt-100'>
             <form onSubmit={handleSubmit(submit)} className={`${styles.recipeForm} d-flex flex-column card p20`}>
             <h1 className={styles.formTitle}>Ajouter une recette</h1>
                 <div>
@@ -66,6 +72,7 @@ function AddRecipe () {
                 </div>
             </form>
         </div>
+        
     )
 
 }
