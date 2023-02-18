@@ -14,7 +14,7 @@ function Content ({recipes, loading , toggleLikedRecipe, handleClickLoadMoreReci
             <h1 className='mb-40 mt-100'>CooK Me ... Mes recettes préférées !!</h1>
 
             <div className='d-flex flex-row justify-content-center align-items-center mt-20 mb-20 gap-10'>
-            <Link to="/add-recipe">   <button  className={styles.btnMoreLoad}>Ajouter une recette</button> </Link>
+            <Link to="/add-recipe">   <button  className={styles.btnMoreLoad}>Ajouter ma recette</button> </Link>
                 <button className={styles.btnMoreLoad}>Mon menu de la semaine</button> 
             </div>
             
