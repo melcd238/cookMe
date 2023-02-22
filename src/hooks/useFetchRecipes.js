@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useContext } from "react";
 import { ApiContext } from "../Context/ApiContext";
+import authHeader from "../Services/authHeaders";
 
 export default function useFetchRecipes() {
 
@@ -14,7 +15,7 @@ export default function useFetchRecipes() {
   useEffect(() => {
     async function fetchRecipes() {
       try {
-        const response = await fetch(`${BASE_URL}?skip=${(page - 1) * 10}&limit=10&sort=createdAt:-1`);
+        const response = await fetch(`${BASE_URL}/recipes/allrecipes`, { headers: authHeader() });
         if (response.ok) {
           const data = await response.json();
           setRecipes((x) => (Array.isArray(data) ? [...x, ...data] : [data]));
@@ -56,6 +57,7 @@ export default function useFetchRecipes() {
     const newrecipes = recipes.filter((recipe) => recipe._id !== id)
    setRecipes(newrecipes)
   }
+
 
   return { recipes, loading, updateRecipe, handleClickLoadMoreRecipes, handleFilter, deleteRecipe };
 }

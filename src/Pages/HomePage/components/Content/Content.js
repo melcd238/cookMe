@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 function Content ({recipes, loading , toggleLikedRecipe, handleClickLoadMoreRecipes, deleteRecipe}){
      
-     
+     console.log(recipes)
 
     return (
         <div className="flex-fill container">
@@ -22,7 +22,9 @@ function Content ({recipes, loading , toggleLikedRecipe, handleClickLoadMoreReci
            (<Loader/>)
             :
            
-           ((<div className={`card p-20 ${styles.contentCard}`}>
+           (( <>
+           <div className={`card p-20 ${styles.contentCard}`}>
+           {recipes.length === 0 && <p className='text-center'>Vous n'avez pas encore de recette</p>}
             <div className={styles.grid}>
                 {recipes.map((recipe) =>(
                      <Recipe key={recipe._id} 
@@ -31,11 +33,12 @@ function Content ({recipes, loading , toggleLikedRecipe, handleClickLoadMoreReci
                              deleteRecipe={deleteRecipe}/>
                 ))}
             </div>
-            </div>))}
-        
+            </div>
+            {recipes.length > 0 &&
             <div className='d-flex flex-row justify-content-center align-items-center mt-20 mb-20'>
                 <button onClick={handleClickLoadMoreRecipes} className={styles.btnMoreLoad}>Charger plus de recettes</button>
-            </div>
+            </div>} 
+            </>))}
 
         </div>
     )

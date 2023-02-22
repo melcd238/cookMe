@@ -9,7 +9,7 @@ import { BrowserRouter } from 'react-router-dom';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   //<React.StrictMode>
-    <ApiContext.Provider value="https://restapi.fr/api/recipes">
+    <ApiContext.Provider value="http://localhost:3000/api">
       <BrowserRouter>
         <App />
       </BrowserRouter>

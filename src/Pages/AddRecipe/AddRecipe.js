@@ -41,7 +41,7 @@ function AddRecipe () {
                 // alert a modifier pour afficher un message plus joli
                 alert('Recette ajoutée avec succès');
                 // redirection vers la page d'accueil
-                window.location.href = '/';
+                window.location.href = '/home';
             } else {
                 setError('generic', { type: 'generic', message: 'Une erreur est survenue' });
             }
@@ -57,7 +57,7 @@ function AddRecipe () {
         <div className={`${styles.cardForm} flex-fill`}>
             <form onSubmit={handleSubmit(submit)} className={`${styles.recipeForm} d-flex flex-column card p20`}>
             <h1 className={styles.formTitle}>Ajouter une recette</h1>
-                <Link to="/"><span className={`material-symbols-outlined ${styles.arrowComeBack}`}>arrow_back</span> </Link>
+                <Link to="/home"><span className={`material-symbols-outlined ${styles.arrowComeBack}`}>arrow_back</span> </Link>
                 <div>
                     <label htmlFor="title">Titre de la recette</label>
                     <input {...register('title')} type="text" name="title" id="title" className={styles.inputForm}/>

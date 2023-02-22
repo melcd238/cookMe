@@ -1,12 +1,15 @@
 import { useContext } from 'react';
 import styles from './Recipe.module.scss';
 import { ApiContext } from '../../../../Context/ApiContext';
+import { Link } from 'react-router-dom';
 
 
-function Recipe ({ recipe :{title, image, liked , _id}, toggleLikedRecipe, deleteRecipe}){
+function Recipe ({ recipe :{title, imageUrl, liked , _id}, toggleLikedRecipe, deleteRecipe}){
     const BASE_URL = useContext(ApiContext)
+   
 
- async  function handleLike (){
+ async  function handleLike (e){
+        e.stopPropagation()
        try {
               const response = await fetch(`${BASE_URL}/${_id}`, {
                 method: "PATCH",
@@ -27,7 +30,8 @@ function Recipe ({ recipe :{title, image, liked , _id}, toggleLikedRecipe, delet
        }
     }
 
-    async function handleDeleteRecipe (){
+    async function handleDeleteRecipe (e){
+        e.stopPropagation()
         try {
             const response = await fetch(`${BASE_URL}/${_id}`, {
                 method: "DELETE",
@@ -42,26 +46,34 @@ function Recipe ({ recipe :{title, image, liked , _id}, toggleLikedRecipe, delet
         }
     }
 
+  
+
+
+
 
     return (
+        
         <div className={styles.recipeContainer}>
 
-            <div className={styles.imageContainer}>
-                <img src={image} alt="recette"/>
+            <Link to={`/recipe/${_id}`}>  <div className={styles.imageContainer}>
+                <img src={imageUrl} alt="recette"/>
                 <div className={styles.deleteBtn}>
                     <span onClick={handleDeleteRecipe} className="material-symbols-outlined">delete</span>
                 </div>
                 <div className={styles.addBookMark}>
                 <span className="material-symbols-outlined">bookmark_add</span>
                 </div>
-            </div>
+            </div>   </Link>
 
             <div className={`${styles.recipeTitle} mt-20 d-flex justify-content-space-between p-10`}>
                 <h3>{title}</h3>
                 <span onClick={handleLike} className={`material-symbols-outlined ${liked ? "text-red" : ""}`}>favorite</span>
             </div>
         </div>
+      
+       
     )
 }
+
 
 export default Recipe

@@ -1,0 +1,130 @@
+.recipeDetail{
+    margin-top: 100px;
+    position: relative;
+    .anecdote{
+        font-size: 24px;
+        font-weight: 400;
+        color: var(--text-color);
+        font-style: italic;
+        font-family: var( --font-family-tertiary);
+    }
+}
+.contentrecipe{
+    display: flex;
+    margin-top: 40px;
+    gap: 20px;
+    .img{
+        max-width: 400px;
+        width: 100%;
+        height: 100%;
+         img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+    }
+    .description{
+        width: 100%;
+        .catAndTime{
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-color);
+            .cat{
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                .catIcon{
+                    font-size: 34px;
+                    font-weight: 500;
+                    color: var(--color-primary);
+                }
+            }
+            .time{
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                .timeIcon{
+                    font-size: 34px;
+                    font-weight: 500;
+                    color: var(--color-primary);
+                }
+            }
+        }
+    }
+    .ingredients, .ustensils{
+        border:1px solid var(--color-gray-2); 
+        border-radius: 15px;
+        display: flex;
+        margin-bottom: 10px;
+        .ing, .ust{
+            display: flex;
+            align-items: center;
+            gap: 10px; 
+            .ingIcon, .ustIcon{
+                font-size: 34px;
+                font-weight: 500;
+                color: var(--color-primary);
+            }
+        }
+        ul{
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+            li{
+                font-size: 14px;
+                font-weight: 400;
+                color: var(--text-color);
+                padding: 5px 10px;
+                border-radius: 15px;
+                background-color: var(--color-gray-2);
+            }
+        }
+     }
+}
+
+.steps{
+    margin-top: 20px;
+    .step{
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 20px;
+        .stepIcon{
+            font-size: 34px;
+            font-weight: 500;
+            color: var(--color-primary);
+        }
+    }
+    .etape{
+        display: flex;
+        align-items: center;
+        margin-bottom: -5px;
+        color: var(--color-primary);
+    }
+    .etapeContent{
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: -5px;
+        color: var(--text-color);
+        font-style: italic;
+        font-weight: 500;
+        text-transform : capitalize;
+    }
+}
+
+.arrowComeBack{
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    cursor: pointer;
+    color: var(--color-primary);
+    font-size: 30px;
+    font-weight: 700;
+}
