@@ -109,13 +109,13 @@
     }
     .etapeContent{
         display: flex;
-        align-items: center;
         flex-wrap: wrap;
         margin-bottom: -5px;
         color: var(--text-color);
         font-style: italic;
         font-weight: 500;
-        text-transform : capitalize;
+        font-size: 14px;
+        text-align: left;
     }
 }
 

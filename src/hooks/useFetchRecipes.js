@@ -54,6 +54,7 @@ export default function useFetchRecipes() {
 
   function deleteRecipe (id){
     // supprimer une recette
+    console.log(id)
     const newrecipes = recipes.filter((recipe) => recipe._id !== id)
    setRecipes(newrecipes)
   }

@@ -7,6 +7,12 @@ import { Link } from "react-router-dom";
 
 function Header ({ searchbar, user}){
 
+    function handleLogout() {
+        localStorage.removeItem("user");
+        // redirect vers la page d'acceuil
+        window.location.href = "/";
+    }
+
     return (
         <header className={`${styles.header}`}>
             <div className="d-flex flex-row align-items-center justify-content-space-between flex-no-wrap">
@@ -19,7 +25,7 @@ function Header ({ searchbar, user}){
             <ul className="d-flex flex-row flex-no-wrap"> 
                 <button className="mr-5"><span className="material-symbols-outlined">menu</span></button>
                 <button className="mr-5"><span className="material-symbols-outlined">bookmarks</span></button>
-                <button><span className="material-symbols-outlined">login</span></button>
+                <button onClick={handleLogout} ><span className="material-symbols-outlined">logout</span></button>
             </ul> </> ) : null }
 
             </div> 

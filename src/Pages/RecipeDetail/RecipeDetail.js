@@ -45,11 +45,11 @@ function RecipeDetail() {
                     </div>
                     <div className={styles.description}>
                         <div className={styles.catAndTime}>
-                          <p className={styles.time}><span class={`material-symbols-outlined ${styles.timeIcon}`}>schedule</span>{recipe?.timePreparation}</p>
-                          <p className={styles.cat}><span class={`material-symbols-outlined ${styles.catIcon}`}>category</span>{recipe?.categorie}</p>
+                          <p className={styles.time}><span className={`material-symbols-outlined ${styles.timeIcon}`}>schedule</span>{recipe?.timePreparation}</p>
+                          <p className={styles.cat}><span className={`material-symbols-outlined ${styles.catIcon}`}>category</span>{recipe?.categorie}</p>
                         </div>
                         <div className={styles.ingredients}>
-                            <p className={styles.ing}><span class={`material-symbols-outlined ${styles.ingIcon}`}>list</span> Ingrédients:</p>
+                            <p className={styles.ing}><span className={`material-symbols-outlined ${styles.ingIcon}`}>list</span> Ingrédients:</p>
                            <ul>
                                  {recipe?.ingredients.map((ingredient, index) => (
                                     <li key={index}>{ingredient}</li>
@@ -57,7 +57,7 @@ function RecipeDetail() {
                            </ul>
                         </div>
                         <div className={styles.ustensils}>
-                            <p className={styles.ust}><span class={`material-symbols-outlined ${styles.ustIcon}`}>restaurant_menu</span> Ustensiles:</p>
+                            <p className={styles.ust}><span className={`material-symbols-outlined ${styles.ustIcon}`}>restaurant_menu</span> Ustensiles:</p>
                             <ul>
                                 {recipe?.ustensils.map((ustensil, index) => (
                                     <li key={index}>{ustensil}</li>

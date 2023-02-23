@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import styles from './Recipe.module.scss';
 import { ApiContext } from '../../../../Context/ApiContext';
 import { Link } from 'react-router-dom';
+import authHeader from '../../../../Services/authHeaders';
 
 
 function Recipe ({ recipe :{title, imageUrl, liked , _id}, toggleLikedRecipe, deleteRecipe}){
@@ -30,19 +31,21 @@ function Recipe ({ recipe :{title, imageUrl, liked , _id}, toggleLikedRecipe, de
        }
     }
 
-    async function handleDeleteRecipe (e){
+    async function handleDeleteRecipe (e, id){
         e.stopPropagation()
         try {
-            const response = await fetch(`${BASE_URL}/${_id}`, {
+            const response = await fetch(`${BASE_URL}/recipes/delete/${id}`, {
                 method: "DELETE",
+               headers: authHeader() 
             })
             if(response.ok){
-                deleteRecipe(_id)
+                deleteRecipe(id)
             } else {
                 console.log("oups error")
+                console.log(response)
             }
         } catch (error) {
-            console.log("oups error")
+            console.log(error)
         }
     }
 
@@ -55,15 +58,15 @@ function Recipe ({ recipe :{title, imageUrl, liked , _id}, toggleLikedRecipe, de
         
         <div className={styles.recipeContainer}>
 
-            <Link to={`/recipe/${_id}`}>  <div className={styles.imageContainer}>
-                <img src={imageUrl} alt="recette"/>
+               <div className={styles.imageContainer}>
+               <Link to={`/recipe/${_id}`}>   <img src={imageUrl} alt="recette"/></Link>
                 <div className={styles.deleteBtn}>
-                    <span onClick={handleDeleteRecipe} className="material-symbols-outlined">delete</span>
+                    <span onClick={(e)=>handleDeleteRecipe(e,_id)} className="material-symbols-outlined">delete</span>
                 </div>
                 <div className={styles.addBookMark}>
                 <span className="material-symbols-outlined">bookmark_add</span>
                 </div>
-            </div>   </Link>
+            </div>  
 
             <div className={`${styles.recipeTitle} mt-20 d-flex justify-content-space-between p-10`}>
                 <h3>{title}</h3>
