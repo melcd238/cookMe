@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 
 function Content ({recipes, loading , toggleLikedRecipe, handleClickLoadMoreRecipes, deleteRecipe}){
      
-     console.log(recipes)
 
     return (
         <div className="flex-fill container">
