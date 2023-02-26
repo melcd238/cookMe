@@ -1,0 +1,26 @@
+.inputForm{
+    width: 100%;
+    margin-bottom: 2px;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 2px solid var(--color-gray-2);
+    background-color: #f5f5f5;
+    border-radius: 15px;
+    outline: none;
+    font-size: 16px;
+        &:focus{
+            border: 1px solid #333;
+        }
+}
+.btnAddIng{
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.inputForm::placeholder{
+    color:  #999;
+    font-weight: 200;
+    font-style: italic;
+    font-size: 12px;
+}
