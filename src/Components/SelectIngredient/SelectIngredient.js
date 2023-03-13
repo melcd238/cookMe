@@ -3,21 +3,21 @@ import Select from 'react-select'
 import { useContext } from 'react';
 import { ApiContext } from '../../Context/ApiContext';
 import authHeader from '../../Services/authHeaders';
-import styles from "./SelectIngredient.module.scss";
+//import styles from "./SelectIngredient.module.scss";
 
 
 
 const SelectIngredient = forwardRef((props, ref) =>{
      const [ingredients, setIngredients] = useState([])
      const [selectedIngredients , setSectedIngredients] = useState([])
-     const [showInput, setShowinput]= useState(false)
-     const [newIngredient, setNewIngredient] = useState('')
+    // const [showInput, setShowinput]= useState(false)
+    // const [newIngredient, setNewIngredient] = useState('')
      const BASE_URL = useContext(ApiContext)
 
    useEffect(()=>{
     async function fetchIngredients (){
         try {
-           const response = await fetch(`${BASE_URL}/ingredients/getallingredients?page=1&limit=20`, { headers: authHeader() }); 
+           const response = await fetch(`${BASE_URL}/ingredients/getallingredients`, { headers: authHeader() }); 
            if(response.ok){
                const data = await response.json();
                setIngredients((x) => (Array.isArray(data) ? [...x, ...data] : [data]));
@@ -46,7 +46,7 @@ const SelectIngredient = forwardRef((props, ref) =>{
           return selectedIngredients;
         }
       }));
-    function handleShowInput(){
+  /*  function handleShowInput(){
         setShowinput(!showInput)
     }
     function handleAddIngredient(e){
@@ -56,7 +56,7 @@ const SelectIngredient = forwardRef((props, ref) =>{
          setShowinput(false);
          console.log(newIngredient)
          console.log(selectedIngredients)
-    }
+    }*/
      
    return (
     <div>
@@ -68,11 +68,11 @@ const SelectIngredient = forwardRef((props, ref) =>{
         label={selectedIngredients} 
         onChange={handleSelectChange}
       />
-      <button onClick={handleShowInput} className={styles.btnAddIng}>Votre ingredient ne fait pas parti de la liste ? Ajoutez le :</button>
+      {/*  <button onClick={handleShowInput} className={styles.btnAddIng}>Votre ingredient ne fait pas parti de la liste ? Ajoutez le :</button>
         {showInput && ( <>
         <input type="text" name="newIngredient" id="newIngredient" className={styles.inputForm} placeholder="Ajouter un ingrédient à la liste" onChange={(e) => setNewIngredient(e.target.value)}/>
-                       <button onClick={(e)=>handleAddIngredient(e)} className={styles.btnAddIng}>Ajouter</button> </>)}
-    </div>
+                       <button onClick={(e)=>handleAddIngredient(e)} className={styles.btnAddIng}>Ajouter</button> </>)} */}
+    </div> 
   );   
 });
 

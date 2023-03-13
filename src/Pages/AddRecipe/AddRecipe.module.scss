@@ -85,4 +85,21 @@
         font-style: italic;
         font-size: 12px;
     }
-   
+    .instructionsDiv{
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border : 1px solid var(--color-gray-2);
+        border-radius: 15px;
+        padding: 15px;
+    }
+    .btnVoice{
+        cursor: pointer;
+        font-size: 20px;
+        font-weight: 700;
+        width: 30px;
+        height: 40px;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }

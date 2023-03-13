@@ -7,16 +7,22 @@ import { ApiContext } from '../../Context/ApiContext';
 import {Link} from 'react-router-dom';
 import SelectIngredient from '../../Components/SelectIngredient/SelectIngredient';
 import SelectUstensil from '../../Components/SelectUstensil/SelectUstensil';
-import { useRef } from 'react';
+import InstructionSteps from '../../Components/InstructionsAdd/Instructions';
+import { useRef, useEffect, useState } from 'react';
+import authHeader from '../../Services/authHeaders';
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 
 
 
 
 
 function AddRecipe () {
+    const { transcript, resetTranscript } = useSpeechRecognition();
+    const [isRecording, setIsRecording] = useState(false);
     const BASE_URL = useContext(ApiContext)
     const ingredientRef = useRef();
     const ustensilRef = useRef();
+    const instructionRef = useRef();
    const defaultValues = {
          title: '',
          liked : false,
@@ -32,27 +38,67 @@ function AddRecipe () {
         title: yup.string().required('Le titre de la recette doit être renseigné').min(3, 'Le titre doit contenir au moins 3 caractères').max(30, 'Le titre doit contenir au maximum 50 caractères'),
         liked: yup.boolean().required('Le champ liked est obligatoire'),
         ingredients: yup.array().required('Le champ ingredients est obligatoire'),
-        instructions: yup.array().required('Le champ instructions est obligatoire'),
+       instructions: yup.array().of(
+            yup.object().shape({
+              etape: yup.number().required(),
+              content: yup.string().required(),
+            })
+          ),
         timePreparation: yup.string().required('Le champ timePreparation est obligatoire'),
         categorie: yup.string().required('Le champ categorie est obligatoire'),
-        ustensils: yup.array().required('Le champ ustensils est obligatoire'),
+        ustensils: yup.array(),
         anecdote: yup.string().required('Le champ anecdote est obligatoire'),
         imageUrl: yup.string().required('L\'image est obligatoire').url('L\'url de l\'image n\'est pas valide'),
     });
 
-   const { register, handleSubmit, reset, clearErrors, setError, formState: { errors, isSubmitting } } = useForm({
+   const { register, handleSubmit,setValue, reset, clearErrors, setError, formState: { errors, isSubmitting } } = useForm({
         defaultValues,
         resolver: yupResolver(recipeSchema),
+        mode: 'onChange',
     });
+
+    const getSelectedValues = () => {
+        const selectedIngredients = ingredientRef.current.getSelectedIngredients();
+        const selectedUstensils = ustensilRef.current.getSelectedUstensils();
+        const selectedInstructions = instructionRef.current.getSelectedInstructions();
+        return {
+            ingredients: selectedIngredients.selectIng,
+            ustensils: selectedUstensils.selectUst,
+            instructions: selectedInstructions,
+          };
+    };
+    
+    const startRecording = () => {
+        setIsRecording(true);
+        resetTranscript();
+        SpeechRecognition.startListening({ continuous: true });
+      };
+      
+      const stopRecording = () => {
+        setIsRecording(false);
+        SpeechRecognition.stopListening();
+      };
+      
+      useEffect(() => {
+        if (transcript && isRecording) {
+          setValue('title', transcript, { shouldValidate: true });
+        }
+      }, [transcript, setValue, isRecording]);
+
    
     async function submit(value) {
+        console.log("submit")
        try {
         clearErrors();
-        const selectedIngredients = ingredientRef.current.getSelectedIngredients();
-        value.ingredients = selectedIngredients.selectIng;
-         const response = await fetch(`${BASE_URL}`, {
+        const { ingredients, ustensils, instructions } = getSelectedValues();
+        value.ingredients = ingredients;
+        value.ustensils = ustensils;
+        value.instructions = instructions;
+        const headers = authHeader();
+         const response = await fetch(`${BASE_URL}/recipes/createrecipe`, {
                 method: 'POST',
                 headers: {
+                    ...headers,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(value),
@@ -76,32 +122,37 @@ function AddRecipe () {
     return (
       
         <div className={`${styles.cardForm} flex-fill`}>
-            <form onSubmit={handleSubmit(submit)} className={`${styles.recipeForm} d-flex flex-column card p20`}>
+
+            <form onSubmit={ handleSubmit(submit)} className={`${styles.recipeForm} d-flex flex-column card p20`}>
             <h1 className={styles.formTitle}>Ajouter une recette</h1>
                 <Link to="/home"><span className={`material-symbols-outlined ${styles.arrowComeBack}`}>arrow_back</span> </Link>
-                <div>
-                    <label htmlFor="title">Titre de la recette</label>
-                    <input {...register('title')} type="text" name="title" id="title" className={styles.inputForm}/>
+                <div  className={styles.instructionsDiv}>
+
+                    <label htmlFor="title">Titre de la recette
+                    <button  onClick={isRecording ? stopRecording : startRecording} className={styles.btnVoice} title={isRecording ? "Arrêter l'enregistrement" : "Enregistrer en vocal"}><span className="material-symbols-outlined">speech_to_text</span></button>
+                    </label>
+                    <input {...register('title')} type="text" name="title" id="title" className={styles.inputForm} placeholder="Exemple : Poulet au four"/>
                    { errors.title && <span className={styles.error}>{errors.title.message}</span>}
                 </div>
-                <div>
+                <div className={styles.instructionsDiv}>
                     <label htmlFor="liked">Like</label>
                     <input {...register('liked')} type="checkbox" name="liked" id="liked" className={styles.inputForm}/>
                 </div>
-                  <>
+                  <div className={styles.instructionsDiv}>
                   <SelectIngredient {...register('ingredients')} ref={ingredientRef}/>
-                {errors.ingredients && <span className={styles.error}>{errors.ingredients.message}</span>}
-                  </>
-                <div>
-                    <label htmlFor="instructions">Instructions</label>
-                    <input {...register('instructions')} type="text" name="instructions" id="instructions" className={styles.inputForm} placeholder="Ajouter des instructions"/>
+                  </div>
+                <div className={styles.instructionsDiv}>
+                <InstructionSteps {...register("instructions")} ref={instructionRef}/>
                 </div>
-                <div>
+                <div className={styles.instructionsDiv}>
+                    <SelectUstensil {...register('ustensils')} ref={ustensilRef}/>
+                </div>
+                <div  className={styles.instructionsDiv}>
                     <label htmlFor="timePreparation">Temps de préparation</label>
                     <input {...register('timePreparation')} type="text" name="timePreparation" id="timePreparation" className={styles.inputForm} placeholder="Ajouter le temps de préparation, par exemple: 25min"/>
                     {errors.timePreparation && <span className={styles.error}>{errors.timePreparation.message}</span>}
                 </div>
-                <div>
+                <div  className={styles.instructionsDiv}>
                     <label htmlFor="categorie">Catégorie</label>
                         <select {...register('categorie')} name="categorie" id="categorie" className={styles.inputForm}>
                             <option value="" disabled defaultValue>Sélectionnez une catégorie: Entrée, Plat ou Dessert</option>
@@ -111,22 +162,20 @@ function AddRecipe () {
                         </select>
                     {errors.categorie && <span className={styles.error}>{errors.categorie.message}</span>}
                 </div>
-                <div>
-                    <SelectUstensil {...register('ustensils')} ref={ustensilRef}/>
-                </div>
-                <div>
+                <div  className={styles.instructionsDiv}>
                     <label htmlFor="anecdote">Anecdote</label>
+                   
                     <input {...register('anecdote')} type="text" name="anecdote" id="anecdote" className={styles.inputForm} placeholder="Ajouter une anecdote"/>
                     {errors.anecdote && <span className={styles.error}>{errors.anecdote.message}</span>}
                 </div>
-                <div>
-                    <label htmlFor="image">Photo de la recette</label>
-                    <input {...register("imageUrl")} type="text" name="image" id="image" className={styles.inputForm} placeholder="Copier le lien d'une photo"/>
-                    {errors.image && <span className={styles.error}>{errors.image.message}</span>}
+                <div  className={styles.instructionsDiv}>
+                    <label htmlFor="imageUrl">Photo de la recette</label>
+                    <input {...register("imageUrl")} type="text" name="imageUrl" id="imageUrl" className={styles.inputForm} placeholder="Copier le lien d'une photo ( https://www.image...)"/>
+                    {errors.imageUrl && <span className={styles.error}>{errors.imageUrl.message}</span>}
                 </div>
                 {errors.generic && <p className={styles.error}>{errors.generic.message}</p>}
                 <div className={styles.btnContainer}>
-                    <button disabled={isSubmitting} className={styles.btnForm}>Sauvegarder</button>
+                    <button disabled={isSubmitting} className={styles.btnForm} type="submit">Sauvegarder</button>
                 </div>
             </form>
         </div>

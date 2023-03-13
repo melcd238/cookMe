@@ -69,7 +69,7 @@ function RecipeDetail() {
                            <ul>
                                 {recipe?.instructions.map((instruction) => (
                                     <li key={instruction._id}>
-                                        <p className={styles.etape}>Etape: {instruction.etape.toUpperCase()} </p>
+                                        <p className={styles.etape}>Etape: {instruction.etape} </p>
                                         <p className={styles.etapeContent}>{instruction.content}.</p>
                                     </li>
                                 ))}
