@@ -135,7 +135,7 @@ function AddRecipe () {
                    { errors.title && <span className={styles.error}>{errors.title.message}</span>}
                 </div>
                 <div className={styles.instructionsDiv}>
-                    <label htmlFor="liked">Like</label>
+                    <label htmlFor="liked">Coup de coeur</label>
                     <input {...register('liked')} type="checkbox" name="liked" id="liked" className={styles.inputForm}/>
                 </div>
                   <div className={styles.instructionsDiv}>

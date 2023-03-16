@@ -4,6 +4,7 @@ import { useContext,useEffect, useState } from 'react';
 import { ApiContext } from '../../Context/ApiContext';
 import authHeader from '../../Services/authHeaders';
 import { Link } from 'react-router-dom';
+import useImage from '../../hooks/useImage';
 
 
 function RecipeDetail() {
@@ -30,8 +31,7 @@ function RecipeDetail() {
            
     },[BASE_URL, id])
 
-
-    console.log(recipe?.instructions )
+    const image = useImage(recipe?.imageUrl);
 
     return (
         <div className={`${styles.recipeDetail} flex-fill container`}>
@@ -41,7 +41,7 @@ function RecipeDetail() {
                  <p className={styles.anecdote}>{recipe?.anecdote}</p>
                 <div className={styles.contentrecipe}>
                     <div className={styles.img}>
-                        <img src={recipe?.imageUrl} alt={recipe?.title} />
+                        <img src={image} alt={recipe?.title} />
                     </div>
                     <div className={styles.description}>
                         <div className={styles.catAndTime}>

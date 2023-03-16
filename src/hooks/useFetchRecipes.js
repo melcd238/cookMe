@@ -8,6 +8,7 @@ export default function useFetchRecipes() {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(null);
 
   const BASE_URL = useContext(ApiContext);
 
@@ -15,10 +16,11 @@ export default function useFetchRecipes() {
   useEffect(() => {
     async function fetchRecipes() {
       try {
-        const response = await fetch(`${BASE_URL}/recipes/allrecipes`, { headers: authHeader() });
+        const response = await fetch(`${BASE_URL}/recipes/allrecipes?page=${page}&limit=8`, { headers: authHeader() });
         if (response.ok) {
           const data = await response.json();
-          setRecipes((x) => (Array.isArray(data) ? [...x, ...data] : [data]));
+          setRecipes((x) => (Array.isArray(data.recipes) ? [...x, ...data.recipes] : [data.recipes]));
+         setHasMore(data.hasMore);
         } else {
           console.log("oups error");
         }
@@ -33,6 +35,10 @@ export default function useFetchRecipes() {
   }, [BASE_URL, page]);
 
   function updateRecipe(updatedRecipe) {
+    setRecipes((recipes) => recipes.map((recipe) => (recipe._id === updatedRecipe._id ? updatedRecipe : recipe)));
+  }
+
+  function updateBookmarks(updatedRecipe) {
     setRecipes((recipes) => recipes.map((recipe) => (recipe._id === updatedRecipe._id ? updatedRecipe : recipe)));
   }
 
@@ -60,5 +66,5 @@ export default function useFetchRecipes() {
   }
 
 
-  return { recipes, loading, updateRecipe, handleClickLoadMoreRecipes, handleFilter, deleteRecipe };
+  return { recipes, hasMore, loading, updateRecipe, handleClickLoadMoreRecipes, handleFilter, deleteRecipe, updateBookmarks };
 }

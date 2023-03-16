@@ -3,11 +3,16 @@ import styles from './Recipe.module.scss';
 import { ApiContext } from '../../../../Context/ApiContext';
 import { Link } from 'react-router-dom';
 import authHeader from '../../../../Services/authHeaders';
+import useImage from '../../../../hooks/useImage';
 
 
-function Recipe ({ recipe :{title, imageUrl, liked , _id}, toggleLikedRecipe, deleteRecipe}){
+
+function Recipe ({ recipe :{title, imageUrl, liked , _id, bookmarked }, toggleLikedRecipe, deleteRecipe, updateBookmarks}){
     const BASE_URL = useContext(ApiContext)
     const [isLiked, setIsLiked] = useState(liked);
+    const [isBookmarked, setIsBookmarked] = useState(bookmarked);
+    const image = useImage(imageUrl);
+ 
 
  async  function handleLike (e){
         e.stopPropagation()
@@ -33,6 +38,30 @@ function Recipe ({ recipe :{title, imageUrl, liked , _id}, toggleLikedRecipe, de
             console.log("oups error")
        }
     }
+   
+  async function handleAddBookMark (e){
+        e.stopPropagation()
+         try {
+              const response = await fetch(`${BASE_URL}/recipes/updatebookmark/${_id}`, {
+                method: "PATCH",
+                headers: {
+                    ...authHeader(),
+                    "Content-Type": "application/json"
+                  },
+                body: JSON.stringify({bookmarked: !isBookmarked})
+              })
+              if(response.ok){
+                const updatedRecipe = await response.json();
+                console.log(updatedRecipe)
+                setIsBookmarked(!isBookmarked)
+                updateBookmarks(updatedRecipe)
+              } else {
+                console.log("oups error")
+              }
+            } catch (error) {
+                  console.log("oups error")
+            }
+        }       
 
     async function handleDeleteRecipe (e, id){
         e.stopPropagation()
@@ -62,12 +91,12 @@ function Recipe ({ recipe :{title, imageUrl, liked , _id}, toggleLikedRecipe, de
         <div className={styles.recipeContainer}>
 
                <div className={styles.imageContainer}>
-               <Link to={`/recipe/${_id}`}>   <img src={imageUrl} alt="recette"/></Link>
+               <Link to={`/recipe/${_id}`}>   <img src={image} alt="recette"/></Link>
                 <div className={styles.deleteBtn}>
                     <span onClick={(e)=>handleDeleteRecipe(e,_id)} className="material-symbols-outlined">delete</span>
                 </div>
                 <div className={styles.addBookMark}>
-                <span className="material-symbols-outlined">bookmark_add</span>
+                <span onClick={(e)=>handleAddBookMark(e,_id)} className={`material-symbols-outlined ${isBookmarked ? "text-red" : ""}`}>bookmark_add</span>
                 </div>
             </div>  
 

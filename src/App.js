@@ -11,12 +11,15 @@ import RecipeDetail from "./Pages/RecipeDetail/RecipeDetail";
 import Accueil from "./Pages/Accueil/Accueil";
 import Connexion from "./Pages/Connexion/Connexion";
 import Register from "./Pages/Register/Register";
+import BookMark from './Pages/BookMark/BookMark';
+
 
 
 
 function App() {
-  const { recipes, loading, updateRecipe, handleClickLoadMoreRecipes,handleFilter, deleteRecipe} = useFetchRecipes();
+  const { recipes,  hasMore, loading, updateRecipe, handleClickLoadMoreRecipes,handleFilter, deleteRecipe, updateBookmarks} = useFetchRecipes();
   const [currentUser, setCurrentUser] = useState(null);
+
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -25,25 +28,30 @@ function App() {
     }
   }, []);
 
-  
+
 
   return (
     <div className={`d-flex flex-column ${styles.appContainer}`}>
+    
       <Header   searchbar={ handleFilter} user={currentUser} />
       <Routes>
         <Route path="/" element={<Accueil/>}/>
         <Route path="/connexion" element={<Connexion/>}/>
         <Route path="/register" element={<Register/>}/>
         {currentUser &&   <Route path="/home" element={<HomePage  recipes = {recipes}
+                  hasMore = {hasMore}
                   loading = {loading}
                   toggleLikedRecipe = {updateRecipe}
                   handleClickLoadMoreRecipes={handleClickLoadMoreRecipes}
-                  deleteRecipe={deleteRecipe}/>}/> }
+                  deleteRecipe={deleteRecipe}
+                  updateBookmarks={updateBookmarks}/>}/> }
         {currentUser && <Route path="/add-recipe" element={<AddRecipe/>}/> }
         {currentUser && <Route path="/recipe/:id" element={<RecipeDetail/> }/> }
+        {currentUser && <Route path="/bookmarks" element={<BookMark/> }/> }
         <Route path="*" element={<ErrorPage/>}/>
        </Routes>      
       <Footer />
+   
     </div>
   );
 }
