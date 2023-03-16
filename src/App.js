@@ -17,7 +17,7 @@ import BookMark from './Pages/BookMark/BookMark';
 
 
 function App() {
-  const { recipes,  hasMore, loading, updateRecipe, handleClickLoadMoreRecipes,handleFilter, deleteRecipe, updateBookmarks} = useFetchRecipes();
+  const {displayedRecipes,  hasMore, loading, updateRecipe, handleClickLoadMoreRecipes,handleFilter, deleteRecipe, updateBookmarks} = useFetchRecipes();
   const [currentUser, setCurrentUser] = useState(null);
 
 
@@ -33,12 +33,12 @@ function App() {
   return (
     <div className={`d-flex flex-column ${styles.appContainer}`}>
     
-      <Header   searchbar={ handleFilter} user={currentUser} />
+      <Header   searchbar={ handleFilter} user={currentUser} displayedRecipes={displayedRecipes} />
       <Routes>
         <Route path="/" element={<Accueil/>}/>
         <Route path="/connexion" element={<Connexion/>}/>
         <Route path="/register" element={<Register/>}/>
-        {currentUser &&   <Route path="/home" element={<HomePage  recipes = {recipes}
+        {currentUser &&   <Route path="/home" element={<HomePage  displayedRecipes={displayedRecipes}
                   hasMore = {hasMore}
                   loading = {loading}
                   toggleLikedRecipe = {updateRecipe}

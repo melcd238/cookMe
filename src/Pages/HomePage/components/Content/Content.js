@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 
 
-function Content ({recipes, hasMore, loading , toggleLikedRecipe, handleClickLoadMoreRecipes, deleteRecipe, updateBookmarks}){
+function Content ({displayedRecipes, hasMore, loading , toggleLikedRecipe, handleClickLoadMoreRecipes, deleteRecipe, updateBookmarks}){
 
     return (
         <div className="flex-fill container">
@@ -22,9 +22,9 @@ function Content ({recipes, hasMore, loading , toggleLikedRecipe, handleClickLoa
            
            (( <>
            <div className={`card p-20 ${styles.contentCard}`}>
-           {recipes.length === 0 && <p className='text-center'>Vous n'avez pas encore de recette</p>}
+           {displayedRecipes.length === 0 && <p className='text-center'>Vous n'avez pas encore de recette</p>}
             <div className={styles.grid}>
-                {recipes.map((recipe) =>(
+                {displayedRecipes.map((recipe) =>(
                      <Recipe key={recipe._id} 
                              recipe={recipe} 
                              toggleLikedRecipe={toggleLikedRecipe}

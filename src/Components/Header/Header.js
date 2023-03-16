@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 
 
-function Header ({ searchbar, user}){
+function Header ({ searchbar, user , displayedRecipes}){
   
     
     function handleLogout() {
@@ -22,7 +22,7 @@ function Header ({ searchbar, user}){
              </div>
             {user ? (
                 <>
-                <SearchBar  searchbar={searchbar}/>
+                <SearchBar  searchbar={searchbar} displayedRecipes={displayedRecipes}/>
             <ul className="d-flex flex-row flex-no-wrap"> 
                 <button className="mr-5"><span className="material-symbols-outlined">menu</span></button>
                <Link to="/bookmarks"><button className="mr-5"><span className="material-symbols-outlined">bookmarks</span>

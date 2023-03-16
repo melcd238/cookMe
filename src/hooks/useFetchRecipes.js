@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { ApiContext } from "../Context/ApiContext";
 import authHeader from "../Services/authHeaders";
 
@@ -9,6 +9,9 @@ export default function useFetchRecipes() {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(null);
+  const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
+  const timeout = useRef(null);
+ 
 
   const BASE_URL = useContext(ApiContext);
 
@@ -16,10 +19,10 @@ export default function useFetchRecipes() {
   useEffect(() => {
     async function fetchRecipes() {
       try {
-        const response = await fetch(`${BASE_URL}/recipes/allrecipes?page=${page}&limit=8`, { headers: authHeader() });
+        const response = await fetch(`${BASE_URL}/recipes/allrecipes?page=${page}&limit=8&search=${debouncedSearchValue}`, { headers: authHeader() });
         if (response.ok) {
           const data = await response.json();
-          setRecipes((x) => (Array.isArray(data.recipes) ? [...x, ...data.recipes] : [data.recipes]));
+          setRecipes((recipes) => [...recipes, ...data.recipes]);
          setHasMore(data.hasMore);
         } else {
           console.log("oups error");
@@ -31,8 +34,15 @@ export default function useFetchRecipes() {
       }
     }
    
-    fetchRecipes();
-  }, [BASE_URL, page]);
+    
+      fetchRecipes();
+  }, [BASE_URL, page, debouncedSearchValue]);
+
+  useEffect(() => {
+    setPage(1);
+    setRecipes([]);
+  }, [debouncedSearchValue]);
+
 
   function updateRecipe(updatedRecipe) {
     setRecipes((recipes) => recipes.map((recipe) => (recipe._id === updatedRecipe._id ? updatedRecipe : recipe)));
@@ -45,17 +55,13 @@ export default function useFetchRecipes() {
   function handleClickLoadMoreRecipes() {
     setPage(page + 1);
   }
-  
-  // A modifier pour que la recherche soit plus fluide et que l'on puisse rechercher par catégorie et par ingrédient en utilisant un useState pour filtrer les recettes
-  function handleFilter(val) { 
-    const filtered = recipes.filter((recipe) => {
-      return recipe.title.toLowerCase().startsWith(val.toLowerCase().trim());
-    });
-    setRecipes(filtered);
-    if(val===""){
-      // afficher de nouveau toutes les recettes si la valeur de l'input est vide pour le moment en faisant un refresh de la page a modifier plus tard
-      window.location.reload();
+  function handleFilter(val) {
+    if (timeout.current) {
+      clearTimeout(timeout.current);
     }
+    timeout.current = setTimeout(() => {
+      setDebouncedSearchValue(val);
+    }, 500);
   }
 
   function deleteRecipe (id){
@@ -64,7 +70,8 @@ export default function useFetchRecipes() {
     const newrecipes = recipes.filter((recipe) => recipe._id !== id)
    setRecipes(newrecipes)
   }
+  
+  const displayedRecipes = debouncedSearchValue ? recipes.filter((recipe) => recipe.title.toLowerCase().startsWith(debouncedSearchValue.toLowerCase().trim()))  : recipes;
 
-
-  return { recipes, hasMore, loading, updateRecipe, handleClickLoadMoreRecipes, handleFilter, deleteRecipe, updateBookmarks };
+  return {  displayedRecipes, recipes, hasMore, loading, updateRecipe, handleClickLoadMoreRecipes, handleFilter, deleteRecipe, updateBookmarks };
 }
